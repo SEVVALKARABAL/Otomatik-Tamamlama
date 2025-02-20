@@ -20,6 +20,7 @@ export default function ToDoList() {
 
   function handleNewItemInputChange(event) {
     setNewItemInput(event.target.value)
+   
   }
 
   function handleEnter(event) {
@@ -37,6 +38,7 @@ export default function ToDoList() {
         scrollToBottom()
       }
     }
+ 
   }
 
   function autoComplete() {
@@ -119,6 +121,7 @@ return (
         <input
           className='new-item-input'
           type='text'
+          value={newItemInput}
           onKeyDown={handleEnter}
           onChange={handleNewItemInputChange}
           onFocus={toggleInputFocus}
