@@ -22,8 +22,6 @@ export default function ToDoList() {
     setNewItemInput(event.target.value)
   }
 
-  /**** Sizi İlgilendiren Bölüm **************************************************************************/
-
   function handleEnter(event) {
     if (newItemInput.trim()) {
       if (event.key === 'Enter') {
@@ -44,9 +42,11 @@ export default function ToDoList() {
   function autoComplete() {
     setAutoCompleteRequested(true)
   }
+
   function toggleInputFocus() {
-    setInputInFocus((pre) => !pre)
+    setInputInFocus((prev) => !prev)
   }
+
   useEffect(() => {
     if (autoCompleteRequested) {
       let timeOut = setTimeout(() => {
@@ -66,6 +66,7 @@ export default function ToDoList() {
     }
   }
 
+
   /* Challenge
   
     1. ClassName'i "new-item-input" olan text input focus'ta olduğunda, opacity 
@@ -81,50 +82,53 @@ export default function ToDoList() {
     Not: 24. satır ("Sizi İlgilendiren Bölüm" olarak işaretlenmiştir) ile bu yorumlar arasındaki kodu okumalısınız. Bu kodun bazı yönleri bu görevleri tamamlamakla ilgilidir. Ancak, bu kod üzerinde herhangi bir değişiklik yapmanıza gerek yoktur. Sadece anlamanız gerekiyor
 */
 
-  const currentList = listData.map((item) => {
-    return (
-      <div className='to-do-list-item-container' key={item.id}>
-        <label className='checkbox-label'>
-          <input
-            type='checkbox'
-            name={item.id}
-            onChange={handleCheckBoxChange}
-          />
-          <span className='checkmark'></span>
-          <p
-            className={`to-do-list-item-text ${item.complete && 'crossed-out'}`}
-          >
-            {item.text}
-          </p>
-        </label>
-        <div className='all-progress-bars-container'>
-          {!item.complete && autoCompleteRequested && (
-            <div className='progress-bar-container'>
-              <div className='progress-bar-content'></div>
-            </div>
-          )}
-        </div>
-      </div>
-    )
-  })
-
+const currentList = listData.map((item) => {
   return (
-    <div>
-      <div className='to-do-list-container' ref={listContainerRef}>
-        {currentList}
-        <label className='new-item-label'>
-          <img src='./images/add-item.svg' className={`add-item-icon`} />
-          <input
-            className='new-item-input'
-            type='text'
-            onKeyDown={handleEnter}
-            onChange={handleNewItemInputChange}
-          />
-        </label>
-      </div>
-      <div className='do-it-button-container'>
-        <button onClick={autoComplete}>Otomatik Tamamlama</button>
+    <div className='to-do-list-item-container' key={item.id}>
+      <label className='checkbox-label'>
+        <input
+          type='checkbox'
+          name={item.id}
+          onChange={handleCheckBoxChange}
+        />
+        <span className='checkmark'></span>
+        <p className={`to-do-list-item-text ${item.complete && 'crossed-out'}`}>
+          {item.text}
+        </p>
+      </label>
+      <div className='all-progress-bars-container'>
+        {!item.complete && autoCompleteRequested && (
+          <div className='progress-bar-container'>
+            <div className='progress-bar-content'></div>
+          </div>
+        )}
       </div>
     </div>
   )
+})
+
+return (
+  <div>
+    <div className='to-do-list-container' ref={listContainerRef}>
+      {currentList}
+      <label className='new-item-label'>
+        <img
+          src='./images/add-item.svg'
+          className={`add-item-icon ${inputInFocus ? 'faded' : ''}`}
+        />
+        <input
+          className='new-item-input'
+          type='text'
+          onKeyDown={handleEnter}
+          onChange={handleNewItemInputChange}
+          onFocus={toggleInputFocus}
+          onBlur={toggleInputFocus}
+        />
+      </label>
+    </div>
+    <div className='do-it-button-container'>
+      <button onClick={autoComplete}>Otomatik Tamamlama</button>
+    </div>
+  </div>
+)
 }
